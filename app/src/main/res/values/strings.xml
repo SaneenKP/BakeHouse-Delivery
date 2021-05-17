@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Delivery Boy</string>
+
+    <!-- delivery indexes-->
+
+    <string name="pickupIndex">Picked</string>
+    <string name="placedIndex">Placed</string>
+    <string name="deliveredIndex">Delivered</string>
+</resources>
