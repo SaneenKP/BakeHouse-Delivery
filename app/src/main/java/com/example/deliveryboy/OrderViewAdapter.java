@@ -3,6 +3,7 @@ package com.example.deliveryboy;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,18 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
         holder.orderPlaced.setTextColor(orderList.get(position).getPlacedIndex().equals("yes") ? Color.parseColor("#07ed1a") : Color.parseColor("#e60b0b"));
         holder.orderDelivered.setTextColor(orderList.get(position).getDeliveryIndex().equals("yes") ? Color.parseColor("#07ed1a") : Color.parseColor("#e60b0b"));
 
+        holder.openMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Uri gmmIntentUri = Uri.parse("geo:"+orderList.get(position).getLatitude()+","+orderList.get(position).getLongitude()+"z=5");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(mapIntent);
+
+            }
+        });
 
         holder.orderCardView.setOnClickListener(new View.OnClickListener() {
             @Override
