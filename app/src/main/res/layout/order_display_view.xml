@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         app:cardBackgroundColor="@color/white"
         app:cardMaxElevation="12dp"
         app:cardPreventCornerOverlap="true"
@@ -17,7 +17,9 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -60,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/orderPlaced"
                     android:layout_marginTop="10dp"
-                    android:text="@string/pickupIndex"
+                    android:text="@string/placedIndex"
                     android:textSize="24sp"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
@@ -74,7 +76,7 @@
                     android:gravity="center"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
-                    android:text="@string/placedIndex"
+                    android:text="@string/pickupIndex"
                     android:textSize="24sp"
                     android:layout_weight="1"
                     />
