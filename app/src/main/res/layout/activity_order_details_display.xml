@@ -1,9 +1,411 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".orderDetailsDisplay">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        >
+
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_margin="20dp"
+           >
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Order Details"
+               android:textSize="25sp"
+               android:textColor="@color/black"
+               android:id="@+id/head"
+
+               />
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@+id/head"
+               android:orientation="horizontal"
+               android:id="@+id/checkboxwrapper"
+               >
+
+               <com.google.android.material.checkbox.MaterialCheckBox
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/placedIndex"
+                   android:textColor="@color/black"
+                   android:id="@+id/orderPlacedCheck"
+                   android:layout_weight="1"
+                   />
+
+               <com.google.android.material.checkbox.MaterialCheckBox
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/pickupIndex"
+                   android:textColor="@color/black"
+                   android:id="@+id/orderPickedCheck"
+                   android:layout_weight="1"
+                   />
+
+               <com.google.android.material.checkbox.MaterialCheckBox
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/deliveredIndex"
+                   android:textColor="@color/black"
+                   android:id="@+id/orderDeliveredCheck"
+                   android:layout_weight="1"
+                   />
+
+           </LinearLayout>
+
+           <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/checkboxwrapper"
+               android:layout_marginTop="20dp"
+               >
+               
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/CustomerName"
+                   android:id="@+id/orderDetailNameHead"
+                   android:textSize="24sp"
+                   android:textColor="@color/black"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/orderDetailName"
+                   android:textSize="22sp"
+                   android:textColor="@color/black"
+                   android:layout_toRightOf="@id/orderDetailNameHead"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/phoneNumber"
+                   android:id="@+id/orderDetailPhoneNumberHead"
+                   android:layout_below="@id/orderDetailNameHead"
+                   android:textSize="24sp"
+                   android:textColor="@color/black"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@id/orderDetailName"
+                   android:id="@+id/orderDetailPhoneNumber"
+                   android:textSize="22sp"
+                   android:textColor="@color/black"
+                   android:layout_toRightOf="@id/orderDetailPhoneNumberHead"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/paymentMethod"
+                   android:id="@+id/paymentMethodHead"
+                   android:layout_below="@id/orderDetailPhoneNumberHead"
+                   android:textSize="24sp"
+                   android:textColor="@color/black"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@id/orderDetailPhoneNumber"
+                   android:id="@+id/paymentMethod"
+                   android:textSize="22sp"
+                   android:textColor="@color/black"
+                   android:layout_toRightOf="@id/paymentMethodHead"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/Hotel"
+                   android:id="@+id/HotelHead"
+                   android:layout_below="@id/paymentMethodHead"
+                   android:textSize="24sp"
+                   android:textColor="@color/black"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@id/paymentMethodHead"
+                   android:id="@+id/Hotel"
+                   android:textSize="22sp"
+                   android:textColor="@color/black"
+                   android:layout_toRightOf="@id/HotelHead"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/Dish"
+                   android:id="@+id/DishesHead"
+                   android:layout_below="@id/HotelHead"
+                   android:textSize="24sp"
+                   android:textColor="@color/black"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@id/HotelHead"
+                   android:id="@+id/Dishes"
+                   android:textSize="22sp"
+                   android:textColor="@color/black"
+                   android:layout_toRightOf="@id/DishesHead"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/Quantity"
+                   android:id="@+id/QuantityHead"
+                   android:layout_below="@id/DishesHead"
+                   android:textSize="24sp"
+                   android:textColor="@color/black"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@id/DishesHead"
+                   android:id="@+id/Quantity"
+                   android:textSize="22sp"
+                   android:textColor="@color/black"
+                   android:layout_toRightOf="@id/QuantityHead"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/price"
+                   android:id="@+id/priceHead"
+                   android:layout_below="@id/QuantityHead"
+                   android:textSize="24sp"
+                   android:textColor="@color/black"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@id/QuantityHead"
+                   android:id="@+id/price"
+                   android:textSize="22sp"
+                   android:textColor="@color/black"
+                   android:layout_toRightOf="@id/priceHead"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/time"
+                   android:id="@+id/timeHead"
+                   android:layout_below="@id/priceHead"
+                   android:textSize="24sp"
+                   android:textColor="@color/black"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@id/priceHead"
+                   android:id="@+id/time"
+                   android:textSize="22sp"
+                   android:textColor="@color/black"
+                   android:layout_toRightOf="@id/timeHead"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="20dp"
+                   android:layout_below="@id/timeHead"
+                   android:text="Address : "
+                   android:textSize="28sp"
+                   android:id="@+id/add"
+                   android:textColor="@color/black"
+                   android:layout_marginBottom="10dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/houseNo"
+                   android:id="@+id/houseNoHead"
+                   android:layout_below="@id/add"
+                   android:textSize="24sp"
+                   android:textColor="@color/black"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@id/add"
+                   android:id="@+id/houseNo"
+                   android:textSize="22sp"
+                   android:textColor="@color/black"
+                   android:layout_toRightOf="@id/houseNoHead"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/houseName"
+                   android:id="@+id/houseNameHead"
+                   android:layout_below="@id/houseNoHead"
+                   android:textSize="24sp"
+                   android:textColor="@color/black"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@id/houseNoHead"
+                   android:id="@+id/houseName"
+                   android:textSize="22sp"
+                   android:textColor="@color/black"
+                   android:layout_toRightOf="@id/houseNameHead"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/landmark"
+                   android:id="@+id/landmarkHead"
+                   android:layout_below="@id/houseNameHead"
+                   android:textSize="24sp"
+                   android:textColor="@color/black"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@id/houseNameHead"
+                   android:id="@+id/landmark"
+                   android:textSize="22sp"
+                   android:textColor="@color/black"
+                   android:layout_toRightOf="@id/landmarkHead"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/street"
+                   android:id="@+id/streetHead"
+                   android:layout_below="@id/landmarkHead"
+                   android:textSize="24sp"
+                   android:textColor="@color/black"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@id/landmarkHead"
+                   android:id="@+id/street"
+                   android:textSize="22sp"
+                   android:textColor="@color/black"
+                   android:layout_toRightOf="@id/streetHead"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/date"
+                   android:id="@+id/dateHead"
+                   android:layout_below="@id/streetHead"
+                   android:textSize="24sp"
+                   android:textColor="@color/black"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@id/streetHead"
+                   android:id="@+id/date"
+                   android:textSize="22sp"
+                   android:textColor="@color/black"
+                   android:layout_toRightOf="@id/dateHead"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+               
+
+           </RelativeLayout>
+
+       </RelativeLayout>
+
+
+    </ScrollView>
+
+
+
+
+
+</RelativeLayout>

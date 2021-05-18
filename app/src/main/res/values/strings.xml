@@ -6,4 +6,22 @@
     <string name="pickupIndex">Picked</string>
     <string name="placedIndex">Placed</string>
     <string name="deliveredIndex">Delivered</string>
+
+
+    <!-- order details -->
+
+    <string name="CustomerName">Customer Name : </string>
+    <string name="phoneNumber">Phone Number : </string>
+    <string name="paymentMethod">Payment Method : </string>
+    <string name="Hotel">Hotel : </string>
+    <string name="Dish">Dishes : </string>
+    <string name="Quantity">Quantity : </string>
+    <string name="price">Price : </string>
+    <string name="time">Time Ordered:</string>
+    <string name="houseNo">House No : </string>
+    <string name="houseName">House Name : </string>
+    <string name="landmark">Landmark : </string>
+    <string name="street">Street : </string>
+    <string name="date">Date : </string>
+    
 </resources>
