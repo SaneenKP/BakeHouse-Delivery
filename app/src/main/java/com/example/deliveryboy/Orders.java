@@ -46,7 +46,7 @@ public class Orders extends AppCompatActivity {
 
         fireBaseRealtimeDatabase = FirebaseDatabase.getInstance().getReference().child("Orders");
 
-     
+
 
         fireBaseRealtimeDatabase.addChildEventListener(new ChildEventListener() {
             @Override
@@ -72,6 +72,13 @@ public class Orders extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                int pos = orderKeys.indexOf(snapshot.getKey());
+                orderKeys.remove(pos);
+                orderList.remove(pos);
+                recyclerView.removeViewAt(pos);
+                orderViewAdapter.notifyItemRemoved(pos);
+                orderViewAdapter.notifyItemRangeChanged(pos, orderList.size());
 
             }
 
