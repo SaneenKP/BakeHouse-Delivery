@@ -12,6 +12,7 @@
         app:cardMaxElevation="12dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true"
+        android:id="@+id/orderCardView"
         >
 
         <RelativeLayout
