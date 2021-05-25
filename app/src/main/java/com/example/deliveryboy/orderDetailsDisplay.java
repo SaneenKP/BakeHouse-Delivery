@@ -1,6 +1,7 @@
 package com.example.deliveryboy;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,8 @@ public class orderDetailsDisplay extends AppCompatActivity {
     private RecyclerView DishOrderDetails;
     private RecyclerView.LayoutManager layoutManager;
     private String dishNames , orderKey;
+    private CustomAlertDialog customAlertDialog;
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class orderDetailsDisplay extends AppCompatActivity {
         setContentView(R.layout.activity_order_details_display);
 
         dishNames = new String();
+        customAlertDialog = new CustomAlertDialog(orderDetailsDisplay.this, getApplicationContext().getResources().getString(R.string.orderDisplayStatus));
 
         customerName = findViewById(R.id.orderDetailName);
         phoneNumber = findViewById(R.id.orderDetailPhoneNumber);
@@ -57,6 +61,7 @@ public class orderDetailsDisplay extends AppCompatActivity {
         orderDetails = (OrderDetails) getOrderDetails.getParcelableExtra("OrderDetails");
         orderKey = getOrderDetails.getStringExtra("OrderKey");
 
+       // setCheckBoxes();
         setOrderDetails(orderDetails);
         getHotel(orderDetails.getHotelId());
 
@@ -64,9 +69,11 @@ public class orderDetailsDisplay extends AppCompatActivity {
 
     }
 
+
+
     private void getHotel(String hotelId){
 
-
+        alertDialog = customAlertDialog.showAlertDialog();
        DatabaseReference getHotelNameReference = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.HotelNode)).child(hotelId);
        getHotelNameReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
            @Override
@@ -77,10 +84,12 @@ public class orderDetailsDisplay extends AppCompatActivity {
                 }
            }
        });
+       alertDialog.dismiss();
     }
 
     private void getDish(String orderKey){
 
+        alertDialog = customAlertDialog.showAlertDialog();
         DatabaseReference getDishDetailsReference = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode)).child(orderKey).child(getApplicationContext().getResources().getString(R.string.DishNode));
         getDishDetailsReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -119,6 +128,7 @@ public class orderDetailsDisplay extends AppCompatActivity {
                 }
             }
         });
+        alertDialog.dismiss();
 
     }
 

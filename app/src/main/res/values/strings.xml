@@ -37,5 +37,9 @@
     <string name="DishNode">Dishes</string>
     <string name="OrderNode">Orders</string>
     <string name="HotelNode">Hotels</string>
-    
+
+    <!-- AlertDialog Box Texts -->
+    <string name="orderStatus">Orders Are Being Loaded Please Wait !!!</string>
+    <string name="AnonymousSignInStatus">Signing In ..Please Wait !!!</string>
+    <string name="orderDisplayStatus">The Details are being Fetched .. Please wait !!!</string>
 </resources>

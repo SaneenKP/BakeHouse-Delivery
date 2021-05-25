@@ -2,11 +2,17 @@ package com.example.deliveryboy;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.deliveryboy.Adapters.OrderViewAdapter;
 import com.example.deliveryboy.PojoClasses.OrderDetails;
@@ -15,6 +21,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +37,8 @@ public class Orders extends AppCompatActivity {
     private List<OrderDetails> orderList;
     private OrderViewAdapter orderViewAdapter;
     private List<String> orderKeys , dishKeys;
+    private CustomAlertDialog customAlertDialog;
+    private AlertDialog alertDialog;
 
 
 
@@ -40,6 +50,7 @@ public class Orders extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView = findViewById(R.id.ordersView);
         recyclerView.setLayoutManager(layoutManager);
+        customAlertDialog = new CustomAlertDialog(Orders.this , getApplicationContext().getResources().getString(R.string.orderStatus));
 
         orderList = new ArrayList<>();
         orderKeys = new ArrayList<>();
@@ -48,6 +59,7 @@ public class Orders extends AppCompatActivity {
         fireBaseRealtimeDatabase = FirebaseDatabase.getInstance().getReference().child("Orders");
 
 
+        alertDialog = customAlertDialog.showAlertDialog();
         fireBaseRealtimeDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -57,6 +69,7 @@ public class Orders extends AppCompatActivity {
                 orderKeys.add(snapshot.getKey());
                 Collections.reverse(orderList);
                 Collections.reverse(orderKeys);
+                alertDialog.dismiss();
                 orderViewAdapter = new OrderViewAdapter(getApplicationContext(), orderList , orderKeys);
                 recyclerView.setAdapter(orderViewAdapter);
             }
@@ -64,23 +77,11 @@ public class Orders extends AppCompatActivity {
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                OrderDetails changedOrderDetails = snapshot.getValue(OrderDetails.class);
-                int pos = orderKeys.indexOf(snapshot.getKey());
-                orderList.remove(pos);
-                orderList.add(changedOrderDetails);
-                orderViewAdapter.notifyDataSetChanged();
 
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                int pos = orderKeys.indexOf(snapshot.getKey());
-                orderKeys.remove(pos);
-                orderList.remove(pos);
-                recyclerView.removeViewAt(pos);
-                orderViewAdapter.notifyItemRemoved(pos);
-                orderViewAdapter.notifyItemRangeChanged(pos, orderList.size());
 
             }
 
@@ -94,7 +95,13 @@ public class Orders extends AppCompatActivity {
 
             }
         });
+
+
     }
+
+
+
+
 }
 
 
