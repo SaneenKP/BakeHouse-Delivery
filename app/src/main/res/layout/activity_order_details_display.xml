@@ -9,7 +9,7 @@
 
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         >
 
        <RelativeLayout
@@ -65,13 +65,14 @@
 
            </LinearLayout>
 
+
            <RelativeLayout
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:layout_below="@id/checkboxwrapper"
                android:layout_marginTop="20dp"
+               android:layout_below="@+id/checkboxwrapper"
                >
-               
+
                <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
@@ -166,60 +167,13 @@
                    android:layout_marginBottom="5dp"
                    />
 
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="@string/Dish"
-                   android:id="@+id/DishesHead"
-                   android:layout_below="@id/HotelHead"
-                   android:textSize="24sp"
-                   android:textColor="@color/black"
-                   android:layout_marginTop="10dp"
-                   android:layout_marginBottom="5dp"
-                   />
-
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_below="@id/HotelHead"
-                   android:id="@+id/Dishes"
-                   android:textSize="22sp"
-                   android:textColor="@color/black"
-                   android:layout_toRightOf="@id/DishesHead"
-                   android:layout_marginTop="10dp"
-                   android:layout_marginBottom="5dp"
-                   />
-
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="@string/Quantity"
-                   android:id="@+id/QuantityHead"
-                   android:layout_below="@id/DishesHead"
-                   android:textSize="24sp"
-                   android:textColor="@color/black"
-                   android:layout_marginTop="10dp"
-                   android:layout_marginBottom="5dp"
-                   />
-
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_below="@id/DishesHead"
-                   android:id="@+id/Quantity"
-                   android:textSize="22sp"
-                   android:textColor="@color/black"
-                   android:layout_toRightOf="@id/QuantityHead"
-                   android:layout_marginTop="10dp"
-                   android:layout_marginBottom="5dp"
-                   />
 
                <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="@string/price"
                    android:id="@+id/priceHead"
-                   android:layout_below="@id/QuantityHead"
+                   android:layout_below="@id/HotelHead"
                    android:textSize="24sp"
                    android:textColor="@color/black"
                    android:layout_marginTop="10dp"
@@ -229,7 +183,7 @@
                <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_below="@id/QuantityHead"
+                   android:layout_below="@id/HotelHead"
                    android:id="@+id/price"
                    android:textSize="22sp"
                    android:textColor="@color/black"
@@ -262,11 +216,36 @@
                    android:layout_marginBottom="5dp"
                    />
 
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/DishNameHead"
+                   android:id="@+id/DishNameHead"
+                   android:layout_below="@id/timeHead"
+                   android:textSize="24sp"
+                   android:textColor="@color/black"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/DishName"
+                   android:textSize="22sp"
+                   android:textColor="@color/black"
+                   android:layout_toRightOf="@id/DishNameHead"
+                   android:layout_below="@id/timeHead"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   />
+
                <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginTop="20dp"
-                   android:layout_below="@id/timeHead"
+                   android:layout_below="@id/DishNameHead"
                    android:text="Address : "
                    android:textSize="28sp"
                    android:id="@+id/add"
@@ -394,7 +373,7 @@
                    android:layout_toRightOf="@id/dateHead"
                    android:layout_marginTop="10dp"
                    android:layout_marginBottom="5dp"
-                   />
+                   /> 
                
 
            </RelativeLayout>

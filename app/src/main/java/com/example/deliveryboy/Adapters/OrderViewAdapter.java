@@ -1,4 +1,4 @@
-package com.example.deliveryboy;
+package com.example.deliveryboy.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.deliveryboy.PojoClasses.OrderDetails;
+import com.example.deliveryboy.R;
+import com.example.deliveryboy.orderDetailsDisplay;
 
 import java.util.List;
 
@@ -23,10 +25,12 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
 
     private Context context;
     private List<OrderDetails> orderList;
+    private List<String> orderKeys;
 
-    public OrderViewAdapter(Context context, List<OrderDetails> orderList) {
+    public OrderViewAdapter(Context context, List<OrderDetails> orderList, List<String> orderKeys) {
         this.context = context;
         this.orderList = orderList;
+        this.orderKeys = orderKeys;
     }
 
     @NonNull
@@ -47,6 +51,19 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
         holder.orderPlaced.setTextColor(orderList.get(position).getPlacedIndex().equals("yes") ? Color.parseColor("#07ed1a") : Color.parseColor("#e60b0b"));
         holder.orderDelivered.setTextColor(orderList.get(position).getDeliveryIndex().equals("yes") ? Color.parseColor("#07ed1a") : Color.parseColor("#e60b0b"));
 
+        holder.orderCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent openOrderDetailsDisplay = new Intent(context , orderDetailsDisplay.class);
+                openOrderDetailsDisplay.putExtra("OrderDetails" , orderList.get(holder.getAdapterPosition()));
+                openOrderDetailsDisplay.putExtra("OrderKey" ,  orderKeys.get(holder.getAdapterPosition()));
+                openOrderDetailsDisplay.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(openOrderDetailsDisplay);
+            }
+        });
+
+
         holder.openMaps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,14 +77,6 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
             }
         });
 
-        holder.orderCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent orderDetails = new Intent(context,orderDetailsDisplay.class);
-               orderDetails.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(orderDetails);
-            }
-        });
 
     }
 

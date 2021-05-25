@@ -16,12 +16,26 @@
     <string name="Hotel">Hotel : </string>
     <string name="Dish">Dishes : </string>
     <string name="Quantity">Quantity : </string>
-    <string name="price">Price : </string>
+    <string name="price">Total Price : </string>
     <string name="time">Time Ordered:</string>
     <string name="houseNo">House No : </string>
     <string name="houseName">House Name : </string>
     <string name="landmark">Landmark : </string>
     <string name="street">Street : </string>
     <string name="date">Date : </string>
+
+    <!-- Dish Details -->
+
+    <string name="DishNameHead">Dish Name :</string>
+    <string name="DishQuantityHead">Quantity :</string>
+    <string name="DishPriceHead">Price :</string>
+
+
+    <!-- Database nodes -->
+
+    <string name="foodNode">Food</string>
+    <string name="DishNode">Dishes</string>
+    <string name="OrderNode">Orders</string>
+    <string name="HotelNode">Hotels</string>
     
 </resources>
