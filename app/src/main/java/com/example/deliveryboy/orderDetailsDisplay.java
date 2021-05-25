@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.service.autofill.Dataset;
 import android.util.Log;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,8 +20,10 @@ import com.example.deliveryboy.PojoClasses.OrderDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class orderDetailsDisplay extends AppCompatActivity {
 
@@ -61,15 +65,88 @@ public class orderDetailsDisplay extends AppCompatActivity {
         orderDetails = (OrderDetails) getOrderDetails.getParcelableExtra("OrderDetails");
         orderKey = getOrderDetails.getStringExtra("OrderKey");
 
-       // setCheckBoxes();
+        setCheckBoxes(orderKey);
         setOrderDetails(orderDetails);
         getHotel(orderDetails.getHotelId());
 
         getDish(orderKey);
 
+        placed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                DatabaseReference setOrderChanges = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode)).child(orderKey);
+
+                if (isChecked){
+
+                    setOrderChanges.child(getApplicationContext().getResources().getString(R.string.placedIndexStatus)).setValue("yes");
+                }
+                else{
+                    setOrderChanges.child(getApplicationContext().getResources().getString(R.string.placedIndexStatus)).setValue("no");
+
+                }
+
+            }
+        });
+        picked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                DatabaseReference setOrderChanges = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode)).child(orderKey);
+
+                if (isChecked){
+
+                    setOrderChanges.child(getApplicationContext().getResources().getString(R.string.pickupIndexStatus)).setValue("yes");
+                }
+                else{
+                    setOrderChanges.child(getApplicationContext().getResources().getString(R.string.pickupIndexStatus)).setValue("no");
+
+                }
+
+            }
+        });
+        delivered.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                DatabaseReference setOrderChanges = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode)).child(orderKey);
+                if (isChecked){
+
+                    setOrderChanges.child(getApplicationContext().getResources().getString(R.string.deliveryIndexStatus)).setValue("yes");
+                }
+                else{
+                    setOrderChanges.child(getApplicationContext().getResources().getString(R.string.deliveryIndexStatus)).setValue("no");
+
+                }
+
+            }
+        });
+
     }
 
+    private void setCheckBoxes(String orderKey){
 
+        alertDialog = customAlertDialog.showAlertDialog();
+        DatabaseReference getOrderStatus = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode)).child(orderKey);
+        getOrderStatus.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String placedStatus =  snapshot.child(getApplicationContext().getResources().getString(R.string.placedIndexStatus)).getValue(String.class);
+                String pickedStatus =  snapshot.child(getApplicationContext().getResources().getString(R.string.pickupIndexStatus)).getValue(String.class);
+                String deliveredStatus =  snapshot.child(getApplicationContext().getResources().getString(R.string.deliveryIndexStatus)).getValue(String.class);
+
+                placed.setChecked(placedStatus.equals("yes"));
+                picked.setChecked(pickedStatus.equals("yes"));
+                delivered.setChecked(deliveredStatus.equals("yes"));
+                alertDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
 
     private void getHotel(String hotelId){
 

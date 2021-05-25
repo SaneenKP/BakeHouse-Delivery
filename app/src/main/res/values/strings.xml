@@ -31,12 +31,15 @@
     <string name="DishPriceHead">Price :</string>
 
 
-    <!-- Database nodes -->
+    <!-- Database nodes and Indexes-->
 
     <string name="foodNode">Food</string>
     <string name="DishNode">Dishes</string>
     <string name="OrderNode">Orders</string>
     <string name="HotelNode">Hotels</string>
+    <string name="placedIndexStatus">placedIndex</string>
+    <string name="pickupIndexStatus">pickupIndex</string>
+    <string name="deliveryIndexStatus">deliveryIndex</string>
 
     <!-- AlertDialog Box Texts -->
     <string name="orderStatus">Orders Are Being Loaded Please Wait !!!</string>
