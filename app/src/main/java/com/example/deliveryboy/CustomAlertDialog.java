@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class CustomAlertDialog {
 
@@ -30,10 +31,8 @@ public class CustomAlertDialog {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(layout , null);
         builder.setView(v);
-
         TextView textView = v.findViewById(R.id.text_progress_bar);
         textView.setText(message);
-
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(SetCancellationOnTouchOutside);
         return dialog;
@@ -46,4 +45,11 @@ public class CustomAlertDialog {
         dialog.show();
         return dialog;
     }
+    public AlertDialog endAlertDialog(){
+
+        AlertDialog dialog = getAlertDialog(layout , message ,SetCancellationOnTouchOutside);
+        dialog.dismiss();
+        return dialog;
+    }
+
 }

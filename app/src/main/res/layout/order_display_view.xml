@@ -1,106 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardMaxElevation="12dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true"
-        android:id="@+id/orderCardView"
-        >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="4dp"
+    android:id="@+id/orderCardView"
+    android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
+    app:cardBackgroundColor="#272727"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="20dp"
+            android:padding="12dp"
             >
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/orderName"
-                android:text="this is the order name"
-                android:textSize="28sp"
-                android:textColor="@color/black"
+                android:text="@string/this_is_the_order_name"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_below="@id/assign"
+                android:textColor="@color/primary"
                 />
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/orderPhoneNumber"
                 android:layout_below="@id/orderName"
                 android:layout_marginTop="10dp"
-                android:text="3847837849"
-                android:textSize="24sp"
+                android:text="@string/_3847837849"
+                android:textColor="@color/primary"
+                app:drawableTint="@color/action"
+                android:drawableLeft="@drawable/ic_baseline_local_phone_24"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 />
 
-            <androidx.appcompat.widget.AppCompatImageButton
+
+
+
+
+            <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableRight="@drawable/ic_baseline_open_in_new_24"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="@string/direction"
+                android:drawableTint="@color/action"
                 android:layout_below="@id/orderName"
                 android:layout_marginTop="10dp"
                 android:id="@+id/openLocation"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/ic_baseline_location_on_24"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/primary"
+                />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/date"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:textColor="@color/primary"
+                android:text="Date"
+
+                />
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/assign"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/primary"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:layout_below="@id/date"
+                android:text="Assigned by delivery boy"
                 />
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/orderPhoneNumber"
+                android:layout_below="@id/openLocation"
                 android:orientation="horizontal"
+                android:id="@+id/status_layout"
                 >
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/orderPlaced"
                     android:layout_marginTop="10dp"
                     android:text="@string/placedIndex"
-                    android:textSize="24sp"
-                    android:layout_marginLeft="10dp"
+                    style="@style/TextAppearance.MaterialComponents.Body2"
+                    android:drawableLeft="@drawable/ic_baseline_check_circle_24"
+                    android:drawableTint="@color/green"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:textColor="@color/primary"
                     />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/orderPicked"
                     android:gravity="center"
                     android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
                     android:text="@string/pickupIndex"
-                    android:textSize="24sp"
+                    style="@style/TextAppearance.MaterialComponents.Body2"
+                    android:drawableLeft="@drawable/ic_baseline_check_circle_24"
+                    android:drawableTint="@color/green"
                     android:layout_weight="1"
+                    android:textColor="@color/primary"
+
                     />
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/orderDelivered"
                     android:gravity="center"
                     android:layout_marginTop="10dp"
                     android:text="@string/deliveredIndex"
-                    android:textSize="24sp"
-                    android:layout_marginLeft="10dp"
+                    style="@style/TextAppearance.MaterialComponents.Body2"
+                    android:drawableLeft="@drawable/ic_baseline_check_circle_24"
+                    android:drawableTint="@color/green"
                     android:layout_weight="1"
+                    android:textColor="@color/primary"
                     />
 
-
-
-            </LinearLayout>
-
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </RelativeLayout>
-
-
-
-    </androidx.cardview.widget.CardView>
-
-</RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

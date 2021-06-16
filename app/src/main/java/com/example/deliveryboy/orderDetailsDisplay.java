@@ -3,6 +3,7 @@ package com.example.deliveryboy;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.example.deliveryboy.PojoClasses.OrderDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,17 +35,14 @@ public class orderDetailsDisplay extends AppCompatActivity {
     private RecyclerView DishOrderDetails;
     private RecyclerView.LayoutManager layoutManager;
     private String dishNames , orderKey;
-    private CustomAlertDialog customAlertDialog;
-    private AlertDialog alertDialog;
-
+    private MaterialTextView hotelAddress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
         setContentView(R.layout.activity_order_details_display);
-
         dishNames = new String();
-        customAlertDialog = new CustomAlertDialog(orderDetailsDisplay.this, getApplicationContext().getResources().getString(R.string.orderDisplayStatus));
-
         customerName = findViewById(R.id.orderDetailName);
         phoneNumber = findViewById(R.id.orderDetailPhoneNumber);
         paymentMethod = findViewById(R.id.paymentMethod);
@@ -56,19 +55,18 @@ public class orderDetailsDisplay extends AppCompatActivity {
         landmark = findViewById(R.id.landmark);
         street = findViewById(R.id.street);
         date = findViewById(R.id.date);
-
+        hotelAddress=findViewById(R.id.Hotel_Address);
         placed = findViewById(R.id.orderPlacedCheck);
         picked = findViewById(R.id.orderPickedCheck);
         delivered = findViewById(R.id.orderDeliveredCheck);
 
         Intent getOrderDetails = getIntent();
-        orderDetails = (OrderDetails) getOrderDetails.getParcelableExtra("OrderDetails");
+        orderDetails = getOrderDetails.getParcelableExtra("OrderDetails");
         orderKey = getOrderDetails.getStringExtra("OrderKey");
 
         setCheckBoxes(orderKey);
         setOrderDetails(orderDetails);
         getHotel(orderDetails.getHotelId());
-
         getDish(orderKey);
 
         placed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -124,8 +122,6 @@ public class orderDetailsDisplay extends AppCompatActivity {
     }
 
     private void setCheckBoxes(String orderKey){
-
-        alertDialog = customAlertDialog.showAlertDialog();
         DatabaseReference getOrderStatus = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode)).child(orderKey);
         getOrderStatus.addValueEventListener(new ValueEventListener() {
             @Override
@@ -137,7 +133,6 @@ public class orderDetailsDisplay extends AppCompatActivity {
                 placed.setChecked(placedStatus.equals("yes"));
                 picked.setChecked(pickedStatus.equals("yes"));
                 delivered.setChecked(deliveredStatus.equals("yes"));
-                alertDialog.dismiss();
             }
 
             @Override
@@ -149,24 +144,21 @@ public class orderDetailsDisplay extends AppCompatActivity {
     }
 
     private void getHotel(String hotelId){
-
-        alertDialog = customAlertDialog.showAlertDialog();
        DatabaseReference getHotelNameReference = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.HotelNode)).child(hotelId);
        getHotelNameReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
            @Override
            public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()){
                     String hotel_name = task.getResult().child("hotel_name").getValue(String.class);
+                    String hotel_address=task.getResult().child("address").getValue(String.class);
                     hotel.setText(hotel_name);
+                    hotelAddress.setText(hotel_address);
                 }
            }
        });
-       alertDialog.dismiss();
     }
 
     private void getDish(String orderKey){
-
-        alertDialog = customAlertDialog.showAlertDialog();
         DatabaseReference getDishDetailsReference = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode)).child(orderKey).child(getApplicationContext().getResources().getString(R.string.DishNode));
         getDishDetailsReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -205,7 +197,6 @@ public class orderDetailsDisplay extends AppCompatActivity {
                 }
             }
         });
-        alertDialog.dismiss();
 
     }
 
@@ -214,13 +205,12 @@ public class orderDetailsDisplay extends AppCompatActivity {
         customerName.setText(orderDetails.getName());
         phoneNumber.setText(orderDetails.getPhoneNumber());
         paymentMethod.setText(orderDetails.getCOD().equals("yes")?"Cash On Delivery" : "Payment Done");
-        price.setText(orderDetails.getTotal());
+        price.setText(" ₹ "+orderDetails.getTotal());
         time.setText(orderDetails.getTime());
         houseno.setText(orderDetails.getHouseNo());
         housename.setText(orderDetails.getHouseName());
         landmark.setText(orderDetails.getLandmark());
         street.setText(orderDetails.getStreet());
         date.setText(orderDetails.getDate());
-
     }
 }

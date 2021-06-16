@@ -11,12 +11,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.deliveryboy.PojoClasses.OrderDetails;
 import com.example.deliveryboy.R;
 import com.example.deliveryboy.orderDetailsDisplay;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
 
@@ -31,6 +34,7 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
         this.context = context;
         this.orderList = orderList;
         this.orderKeys = orderKeys;
+
     }
 
     @NonNull
@@ -47,14 +51,13 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
 
         holder.orderName.setText(orderList.get(position).getName());
         holder.orderNumber.setText(orderList.get(position).getPhoneNumber());
-        holder.orderPicked.setTextColor(orderList.get(position).getPickupIndex().equals("yes") ? Color.parseColor("#07ed1a") : Color.parseColor("#e60b0b"));
-        holder.orderPlaced.setTextColor(orderList.get(position).getPlacedIndex().equals("yes") ? Color.parseColor("#07ed1a") : Color.parseColor("#e60b0b"));
-        holder.orderDelivered.setTextColor(orderList.get(position).getDeliveryIndex().equals("yes") ? Color.parseColor("#07ed1a") : Color.parseColor("#e60b0b"));
-
+        holder.orderPicked.setVisibility(orderList.get(position).getPickupIndex().equals("yes") ? View.VISIBLE : View.INVISIBLE);
+        holder.orderPlaced.setVisibility(orderList.get(position).getPlacedIndex().equals("yes") ? View.VISIBLE: View.INVISIBLE);
+        holder.orderDelivered.setVisibility(orderList.get(position).getDeliveryIndex().equals("yes") ? View.VISIBLE :View.INVISIBLE);
+        holder.date.setText(orderList.get(position).getTime()+" "+orderList.get(position).getDate());
         holder.orderCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent openOrderDetailsDisplay = new Intent(context , orderDetailsDisplay.class);
                 openOrderDetailsDisplay.putExtra("OrderDetails" , orderList.get(holder.getAdapterPosition()));
                 openOrderDetailsDisplay.putExtra("OrderKey" ,  orderKeys.get(holder.getAdapterPosition()));
@@ -62,17 +65,30 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
                 context.startActivity(openOrderDetailsDisplay);
             }
         });
-
+        holder.orderNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:"+orderList.get(position).getPhoneNumber()+"\""));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
 
         holder.openMaps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Uri gmmIntentUri = Uri.parse("geo:"+orderList.get(position).getLatitude()+","+orderList.get(position).getLongitude()+"z=5");
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(mapIntent);
+//                Uri gmmIntentUri = Uri.parse("geo:"+orderList.get(position).getLatitude()+","+orderList.get(position).getLongitude()+"z=5");
+//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+//                mapIntent.setPackage("com.google.android.apps.maps");
+//                mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(mapIntent);
+
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?daddr="+orderList.get(position).getLatitude()+","+orderList.get(position).getLongitude()+"\""));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
 
             }
         });
@@ -87,10 +103,10 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
 
     public static class orderHolder extends RecyclerView.ViewHolder {
 
-        private TextView orderName , orderNumber , orderPicked ,orderPlaced , orderDelivered;
-        private ImageButton openMaps;
+        private TextView orderName , orderPicked ,orderPlaced , orderDelivered;
+        private MaterialButton openMaps,orderNumber;
         private CardView orderCardView;
-
+        private MaterialTextView date;
         public orderHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -101,6 +117,7 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
             orderDelivered = itemView.findViewById(R.id.orderDelivered);
             openMaps = itemView.findViewById(R.id.openLocation);
             orderCardView = itemView.findViewById(R.id.orderCardView);
+            date=itemView.findViewById(R.id.date);
         }
     }
 }

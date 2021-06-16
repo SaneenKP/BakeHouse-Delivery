@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">Delivery Boy</string>
+    <string name="app_name">Delivery Boy- Kepler</string>
 
     <!-- delivery indexes-->
 
-    <string name="pickupIndex">Picked</string>
-    <string name="placedIndex">Placed</string>
-    <string name="deliveredIndex">Delivered</string>
+    <string name="pickupIndex">Picked up</string>
+    <string name="placedIndex">Confirmed</string>
+    <string name="deliveredIndex">On delivery</string>
 
 
     <!-- order details -->
@@ -45,4 +45,9 @@
     <string name="orderStatus">Orders Are Being Loaded Please Wait !!!</string>
     <string name="AnonymousSignInStatus">Signing In ..Please Wait !!!</string>
     <string name="orderDisplayStatus">The Details are being Fetched .. Please wait !!!</string>
+    <string name="this_is_the_order_name">this is the order name</string>
+    <string name="_3847837849">3847837849</string>
+    <string name="address">Address</string>
+    <string name="direction">Direction</string>
+    <string name="order_details">Order Details</string>
 </resources>

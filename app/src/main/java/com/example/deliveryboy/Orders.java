@@ -4,18 +4,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.deliveryboy.Adapters.OrderViewAdapter;
 import com.example.deliveryboy.PojoClasses.OrderDetails;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,41 +40,43 @@ public class Orders extends AppCompatActivity {
     private List<OrderDetails> orderList;
     private OrderViewAdapter orderViewAdapter;
     private List<String> orderKeys , dishKeys;
-    private CustomAlertDialog customAlertDialog;
-    private AlertDialog alertDialog;
-
-
+    private LinearProgressIndicator linearProgressIndicator;
+    private ChildEventListener childEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         setContentView(R.layout.activity_orders);
-
         layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView = findViewById(R.id.ordersView);
         recyclerView.setLayoutManager(layoutManager);
-        customAlertDialog = new CustomAlertDialog(Orders.this , getApplicationContext().getResources().getString(R.string.orderStatus));
-
         orderList = new ArrayList<>();
         orderKeys = new ArrayList<>();
         dishKeys = new ArrayList<>();
-
         fireBaseRealtimeDatabase = FirebaseDatabase.getInstance().getReference().child("Orders");
+        linearProgressIndicator=findViewById(R.id.orderLoadProgress);
+        linearProgressIndicator.setVisibility(View.INVISIBLE);
+        orderViewAdapter = new OrderViewAdapter(getApplicationContext(), orderList , orderKeys);
+        recyclerView.setAdapter(orderViewAdapter);
 
+    }
 
-        alertDialog = customAlertDialog.showAlertDialog();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("KEPLER", "On Start Called");
+        linearProgressIndicator.setVisibility(View.VISIBLE);
         fireBaseRealtimeDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
                 OrderDetails orderDetails = snapshot.getValue(OrderDetails.class);
                 orderList.add(orderDetails);
                 orderKeys.add(snapshot.getKey());
                 Collections.reverse(orderList);
                 Collections.reverse(orderKeys);
-                alertDialog.dismiss();
-                orderViewAdapter = new OrderViewAdapter(getApplicationContext(), orderList , orderKeys);
-                recyclerView.setAdapter(orderViewAdapter);
+                orderViewAdapter.notifyDataSetChanged();
+                linearProgressIndicator.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -99,9 +104,12 @@ public class Orders extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("KEPLER", "On Pause Called");
 
-
-
+    }
 }
 
 

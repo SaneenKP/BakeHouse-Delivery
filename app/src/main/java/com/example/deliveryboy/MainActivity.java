@@ -3,6 +3,7 @@ package com.example.deliveryboy;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,20 +24,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         setContentView(R.layout.activity_main);
-
         auth = FirebaseAuth.getInstance();
-        customAlertDialog = new CustomAlertDialog(MainActivity.this , getApplicationContext().getResources().getString(R.string.AnonymousSignInStatus));
+        customAlertDialog = new CustomAlertDialog(MainActivity.this ,
+                getApplicationContext().getResources().
+                        getString(R.string.AnonymousSignInStatus));
     }
 
     private void AnonymousSignIn(){
 
         alertDialog = customAlertDialog.showAlertDialog();
-         auth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+         auth.signInAnonymously().
+                 addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
              @Override
              public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
-                        Toast.makeText(getApplicationContext() , "Anonymous Authentication Successful" , Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext() , ""+task.getResult().getUser().getUid() , Toast.LENGTH_LONG).show();
                         Intent openOrders = new Intent(MainActivity.this , Orders.class);
                         alertDialog.dismiss();
                         startActivity(openOrders);
@@ -54,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         FirebaseUser currentUser = auth.getCurrentUser();
-
         if (currentUser != null){
             alertDialog = customAlertDialog.showAlertDialog();
             Intent openOrders = new Intent(MainActivity.this , Orders.class);
