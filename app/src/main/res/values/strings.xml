@@ -4,8 +4,8 @@
     <!-- delivery indexes-->
 
     <string name="pickupIndex">Picked up</string>
-    <string name="placedIndex">Confirmed</string>
-    <string name="deliveredIndex">On delivery</string>
+    <string name="placedIndex">Placed</string>
+    <string name="deliveredIndex">Delivered</string>
 
 
     <!-- order details -->
