@@ -51,7 +51,23 @@
                 android:padding="12dp"
                 />
         </androidx.appcompat.widget.LinearLayoutCompat>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:switchMinWidth="56dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:checked="false"
+        android:layout_gravity="right"
+        android:layout_margin="16dp"
+        android:text="Delivery Notification    "
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:textOff="You have turned OFF"
+        android:textOn="You have turned ON"/>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
