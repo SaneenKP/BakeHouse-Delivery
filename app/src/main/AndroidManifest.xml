@@ -9,7 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DeliveryBoy">
-        <activity android:name=".orderDetailsDisplay"></activity>
+        <service
+            android:name=".NotifyService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity android:name=".orderDetailsDisplay" />
         <activity android:name=".Orders" />
         <activity android:name=".MainActivity">
             <intent-filter>
