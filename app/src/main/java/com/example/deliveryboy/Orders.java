@@ -20,6 +20,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +49,7 @@ public class Orders extends AppCompatActivity {
         orderList = new ArrayList<>();
         orderKeys = new ArrayList<>();
         dishKeys = new ArrayList<>();
-        fireBaseRealtimeDatabase = FirebaseDatabase.getInstance().getReference().child("Orders");
+        fireBaseRealtimeDatabase = FirebaseDatabase.getInstance().getReference().child("Notification");
         linearProgressIndicator=findViewById(R.id.orderLoadProgress);
         linearProgressIndicator.setVisibility(View.INVISIBLE);
         orderViewAdapter = new OrderViewAdapter(getApplicationContext(), orderList , orderKeys);
@@ -61,6 +63,7 @@ public class Orders extends AppCompatActivity {
         fireBaseRealtimeDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                
                 linearProgressIndicator.setVisibility(View.INVISIBLE);
                 OrderDetails orderDetails = snapshot.getValue(OrderDetails.class);
                 orderList.add(0,orderDetails);
@@ -97,6 +100,8 @@ public class Orders extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         serviceIntent=new Intent(Orders.this,NotifyService.class);
+        serviceIntent.putExtra("title" , "this is the title");
+        serviceIntent.putExtra("Message" , "this is the message");
         switchMaterial.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
