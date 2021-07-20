@@ -7,8 +7,10 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -93,6 +95,19 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
             }
         });
 
+        holder.assign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.assign.isChecked()){
+                    Toast.makeText(context,"assigned",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(context,"not assigned",Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+
 
     }
 
@@ -107,6 +122,7 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
         private MaterialButton openMaps,orderNumber;
         private CardView orderCardView;
         private MaterialTextView date;
+        private CheckBox assign;
         public orderHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -117,6 +133,7 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
             orderDelivered = itemView.findViewById(R.id.orderDelivered);
             openMaps = itemView.findViewById(R.id.openLocation);
             orderCardView = itemView.findViewById(R.id.orderCardView);
+            assign = itemView.findViewById(R.id.assign);
             date=itemView.findViewById(R.id.date);
         }
     }

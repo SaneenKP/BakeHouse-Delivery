@@ -6,11 +6,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import com.example.deliveryboy.Adapters.OrderViewAdapter;
 import com.example.deliveryboy.PojoClasses.OrderDetails;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
@@ -37,6 +47,9 @@ public class Orders extends AppCompatActivity {
     private LinearProgressIndicator linearProgressIndicator;
     private SwitchMaterial switchMaterial;
     private Intent serviceIntent;
+    private EditText deliveryBoy_name , deliveryBoy_no;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +62,52 @@ public class Orders extends AppCompatActivity {
         orderList = new ArrayList<>();
         orderKeys = new ArrayList<>();
         dishKeys = new ArrayList<>();
-        fireBaseRealtimeDatabase = FirebaseDatabase.getInstance().getReference().child("Notification");
+        sharedPreferences = getSharedPreferences("deliveryNotificationStatus" , Context.MODE_PRIVATE);
+        fireBaseRealtimeDatabase = FirebaseDatabase.getInstance().getReference().child("Orders");
         linearProgressIndicator=findViewById(R.id.orderLoadProgress);
         linearProgressIndicator.setVisibility(View.INVISIBLE);
         orderViewAdapter = new OrderViewAdapter(getApplicationContext(), orderList , orderKeys);
         recyclerView.setAdapter(orderViewAdapter);
         switchMaterial=findViewById(R.id.switch1);
+        deliveryBoy_name = findViewById(R.id.deliveryboy_name);
+        deliveryBoy_no = findViewById(R.id.phoneNumber_deliveryboy);
         retrieveOrders();
+        retrieveNotification();
+    }
+
+    private void retrieveNotification(){
+
+        DatabaseReference firebaseNotificationDatabase = FirebaseDatabase.getInstance().getReference().child("Notification");
+        firebaseNotificationDatabase.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable  String previousChildName) {
+                String assigned = snapshot.child("assigned").getValue(String.class);
+                if (assigned.equals("yes")){
+                    serviceIntent.putExtra("title" , snapshot.child("name").getValue(String.class));
+                    serviceIntent.putExtra("Message" , snapshot.child("location").getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull  DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull  DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull  DataSnapshot snapshot, @Nullable  String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull  DatabaseError error) {
+
+            }
+        });
     }
 
     private void retrieveOrders() {
@@ -63,7 +115,8 @@ public class Orders extends AppCompatActivity {
         fireBaseRealtimeDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                
+
+
                 linearProgressIndicator.setVisibility(View.INVISIBLE);
                 OrderDetails orderDetails = snapshot.getValue(OrderDetails.class);
                 orderList.add(0,orderDetails);
@@ -99,28 +152,46 @@ public class Orders extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        if (sharedPreferences.getBoolean("notification",false)){
+            switchMaterial.setChecked(true);
+        }
+
         serviceIntent=new Intent(Orders.this,NotifyService.class);
-        serviceIntent.putExtra("title" , "this is the title");
-        serviceIntent.putExtra("Message" , "this is the message");
+
+
         switchMaterial.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    startService(serviceIntent);
+
+                if (TextUtils.isEmpty(deliveryBoy_name.getText().toString()) || TextUtils.isEmpty(deliveryBoy_no.getText().toString())){
+                    switchMaterial.setChecked(false);
+                    Toast.makeText(getApplicationContext(), "Name and Number field should not be empty", Toast.LENGTH_SHORT).show();
                 }else{
-                    stopService(serviceIntent);
+                    if (deliveryBoy_no.getText().toString().length() != 10){
+                        switchMaterial.setChecked(false);
+                        Toast.makeText(getApplicationContext(), "invalid phone number format", Toast.LENGTH_SHORT).show();
+                    }else{
+                        if(isChecked){
+                            editor = sharedPreferences.edit();
+                            editor.putBoolean("notification" , true);
+                            startService(serviceIntent);
+                        }else{
+                            editor = sharedPreferences.edit();
+                            editor.putBoolean("notification" , false);
+                            stopService(serviceIntent);
+                        }
+                        editor.commit();
+                    }
+
                 }
+
             }
         });
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("KEPLER", "On Pause Called");
 
-    }
 }
 
 
