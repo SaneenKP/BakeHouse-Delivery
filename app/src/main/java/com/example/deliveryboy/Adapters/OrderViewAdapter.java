@@ -1,6 +1,7 @@
 package com.example.deliveryboy.Adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +23,7 @@ import com.example.deliveryboy.PojoClasses.OrderDetails;
 import com.example.deliveryboy.R;
 import com.example.deliveryboy.orderDetailsDisplay;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
@@ -98,17 +101,37 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
         holder.assign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (holder.assign.isChecked()){
-                    Toast.makeText(context,"assigned",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(context,"not assigned",Toast.LENGTH_SHORT).show();
 
-                }
+                showDialog(holder.assign);
 
             }
         });
 
 
+    }
+
+    private void showDialog(CheckBox assign){
+
+
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
+        alertDialogBuilder.setTitle("Are you sure to assign to this order");
+        alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                assign.setClickable(false);
+            }
+        });
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                assign.setChecked(false);
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = alertDialogBuilder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     @Override

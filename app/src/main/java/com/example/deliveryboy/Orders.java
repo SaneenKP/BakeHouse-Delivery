@@ -66,7 +66,7 @@ public class Orders extends AppCompatActivity {
         fireBaseRealtimeDatabase = FirebaseDatabase.getInstance().getReference().child("Orders");
         linearProgressIndicator=findViewById(R.id.orderLoadProgress);
         linearProgressIndicator.setVisibility(View.INVISIBLE);
-        orderViewAdapter = new OrderViewAdapter(getApplicationContext(), orderList , orderKeys);
+        orderViewAdapter = new OrderViewAdapter(Orders.this, orderList , orderKeys);
         recyclerView.setAdapter(orderViewAdapter);
         switchMaterial=findViewById(R.id.switch1);
         deliveryBoy_name = findViewById(R.id.deliveryboy_name);
@@ -83,7 +83,7 @@ public class Orders extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable  String previousChildName) {
                 String assigned = snapshot.child("assigned").getValue(String.class);
                 if (assigned.equals("yes")){
-                    serviceIntent.putExtra("title" , snapshot.child("name").getValue(String.class));
+                    serviceIntent.putExtra("title"  , snapshot.child("name").getValue(String.class));
                     serviceIntent.putExtra("Message" , snapshot.child("location").getValue(String.class));
                 }
             }
