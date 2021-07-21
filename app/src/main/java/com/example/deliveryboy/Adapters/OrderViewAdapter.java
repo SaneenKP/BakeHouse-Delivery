@@ -3,24 +3,23 @@ package com.example.deliveryboy.Adapters;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.deliveryboy.Orders;
 import com.example.deliveryboy.PojoClasses.OrderDetails;
 import com.example.deliveryboy.R;
+import com.example.deliveryboy.SetDeliveryBoyInterface;
 import com.example.deliveryboy.orderDetailsDisplay;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -34,11 +33,13 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
     private Context context;
     private List<OrderDetails> orderList;
     private List<String> orderKeys;
+    private SetDeliveryBoyInterface setDeliveryBoyInterface;
 
-    public OrderViewAdapter(Context context, List<OrderDetails> orderList, List<String> orderKeys) {
+    public OrderViewAdapter(Context context, List<OrderDetails> orderList, List<String> orderKeys , SetDeliveryBoyInterface setDeliveryBoyInterface) {
         this.context = context;
         this.orderList = orderList;
         this.orderKeys = orderKeys;
+        this.setDeliveryBoyInterface = setDeliveryBoyInterface;
 
     }
 
@@ -98,11 +99,12 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
             }
         });
 
+
         holder.assign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                showDialog(holder.assign);
+                showDialog(holder.assign , orderKeys.get(holder.getAdapterPosition()));
 
             }
         });
@@ -110,15 +112,22 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
 
     }
 
-    private void showDialog(CheckBox assign){
+
+    private void showDialog(CheckBox assign , String key){
 
 
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
         alertDialogBuilder.setTitle("Are you sure to assign to this order");
+
         alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                assign.setClickable(false);
+
+                if (setDeliveryBoyInterface.checkDeliveryBoyDetails()){
+                   setDeliveryBoyInterface.setDeliveryBoy(key , assign);
+                }else{
+                    assign.setChecked(false);
+                }
             }
         });
         alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {

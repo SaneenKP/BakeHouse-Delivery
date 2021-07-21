@@ -40,6 +40,7 @@
     <string name="placedIndexStatus">placedIndex</string>
     <string name="pickupIndexStatus">pickupIndex</string>
     <string name="deliveryIndexStatus">deliveryIndex</string>
+    <string name="DeliveryBoyNode">DeliveryBoy</string>
 
     <!-- AlertDialog Box Texts -->
     <string name="orderStatus">Orders Are Being Loaded Please Wait !!!</string>
