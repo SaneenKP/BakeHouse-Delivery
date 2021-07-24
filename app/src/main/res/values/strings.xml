@@ -30,6 +30,9 @@
     <string name="DishQuantityHead">Quantity :</string>
     <string name="DishPriceHead">Price :</string>
 
+    <!-- ShreadPreference File name -->
+    <string name="DeliveryBoyPreference">DeliveryBoyPreferences</string>
+
 
     <!-- Database nodes and Indexes-->
 

@@ -1,4 +1,4 @@
-package com.example.deliveryboy;
+ package com.example.deliveryboy;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,9 +48,7 @@ public class Orders extends AppCompatActivity {
     private SwitchMaterial switchMaterial;
     private Intent serviceIntent;
     private EditText deliveryBoy_name , deliveryBoy_no;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
-    private boolean setDeliveryBoyStatus = false;
+    private SharedPreferenceConfig sharedPreferenceConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,7 @@ public class Orders extends AppCompatActivity {
         orderList = new ArrayList<>();
         orderKeys = new ArrayList<>();
         dishKeys = new ArrayList<>();
-        sharedPreferences = getSharedPreferences("deliveryNotificationStatus" , Context.MODE_PRIVATE);
+        sharedPreferenceConfig = new SharedPreferenceConfig(getApplicationContext());
         fireBaseRealtimeDatabase = FirebaseDatabase.getInstance().getReference().child("Orders");
         linearProgressIndicator=findViewById(R.id.orderLoadProgress);
         linearProgressIndicator.setVisibility(View.INVISIBLE);
@@ -88,40 +87,110 @@ public class Orders extends AppCompatActivity {
 
 
 
-    private boolean setDeliveryBoyDetails(String orderKey , CheckBox assign){
+    private void setDeliveryBoyDetails(String orderKey , CheckBox assign){
 
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference ordersDatabase = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode)).child(orderKey);
-        DeliveryBoyDetails deliveryBoyDetails = new DeliveryBoyDetails();
-        deliveryBoyDetails.setName(deliveryBoy_name.getText().toString());
-        deliveryBoyDetails.setNumber(deliveryBoy_no.getText().toString());
-        ordersDatabase.child(getApplicationContext().getResources().getString(R.string.DeliveryBoyNode)).push().setValue(deliveryBoyDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull  Task<Void> task) {
-                if (task.isSuccessful()){
 
-                    ordersDatabase.child("assigned").setValue("yes").addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull  Task<Void> task) {
-                            if (task.isSuccessful()){
-                                assign.setChecked(true);
-                                assign.setClickable(false);
-                                Toast.makeText(getApplicationContext() , "Order Assigned",Toast.LENGTH_SHORT).show();
+        if (sharedPreferenceConfig.readDeliveryBoyName().equals("") || sharedPreferenceConfig.readDeliveryBoyNumber().equals("")){
+            DeliveryBoyDetails deliveryBoyDetails = new DeliveryBoyDetails();
+            deliveryBoyDetails.setName(deliveryBoy_name.getText().toString());
+            deliveryBoyDetails.setNumber(deliveryBoy_no.getText().toString());
+            sharedPreferenceConfig.writeDeliveryBoyDetails(deliveryBoyDetails);
 
-                            }else{
-                                assign.setChecked(false);
-                                Toast.makeText(getApplicationContext() , "Failed  "+ task.getException(),Toast.LENGTH_SHORT).show();
-                            }
+            DatabaseReference deliveryBoyDatabase = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.DeliveryBoyNode));
+            deliveryBoyDatabase.child(userID).setValue(deliveryBoyDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull  Task<Void> task) {
+
+                        if (task.isSuccessful()){
+
+                            ordersDatabase.child(getApplicationContext().getResources().getString(R.string.DeliveryBoyNode)).setValue(userID).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull  Task<Void> task) {
+
+                                    if (task.isSuccessful()){
+
+                                        if (task.isSuccessful()){
+
+                                            ordersDatabase.child("assigned").setValue("yes").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull  Task<Void> task) {
+                                                    if (task.isSuccessful()){
+                                                        assign.setChecked(true);
+                                                        assign.setClickable(false);
+                                                        Toast.makeText(getApplicationContext() , "Order Assigned",Toast.LENGTH_SHORT).show();
+
+                                                    }else{
+                                                        assign.setChecked(false);
+                                                        Toast.makeText(getApplicationContext() , "Failed  "+ task.getException(),Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+
+                                        }else{
+                                            assign.setChecked(false);
+                                            Toast.makeText(getApplicationContext() , "Failed  "+ task.getException(),Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+                                    else{
+                                        Toast.makeText(getApplicationContext() , "Failed  to assign delivery boy"+ task.getException(),Toast.LENGTH_SHORT).show();
+
+                                    }
+
+                                }
+
+                            });
+
+                        }else{
+                            Toast.makeText(getApplicationContext() , "Failed  to set delivery boy data"+ task.getException(),Toast.LENGTH_SHORT).show();
                         }
-                    });
 
-                }else{
-                    assign.setChecked(false);
-                    Toast.makeText(getApplicationContext() , "Failed  "+ task.getException(),Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-        return setDeliveryBoyStatus;
-    }
+            });
+        }else{
+            ordersDatabase.child(getApplicationContext().getResources().getString(R.string.DeliveryBoyNode)).setValue(userID).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull  Task<Void> task) {
+
+                    if (task.isSuccessful()){
+
+                        if (task.isSuccessful()){
+
+                            ordersDatabase.child("assigned").setValue("yes").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull  Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        assign.setChecked(true);
+                                        assign.setClickable(false);
+                                        Toast.makeText(getApplicationContext() , "Order Assigned",Toast.LENGTH_SHORT).show();
+
+                                    }else{
+                                        assign.setChecked(false);
+                                        Toast.makeText(getApplicationContext() , "Failed  "+ task.getException(),Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
+                        }else{
+                            assign.setChecked(false);
+                            Toast.makeText(getApplicationContext() , "Failed  "+ task.getException(),Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext() , "Failed  to assign delivery boy"+ task.getException(),Toast.LENGTH_SHORT).show();
+
+                    }
+
+                }
+
+            });
+
+        }
+
+     }
 
 
 
@@ -211,8 +280,14 @@ public class Orders extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if (sharedPreferences.getBoolean("notification",false)){
+        if (sharedPreferenceConfig.readNotificationStatus()){
             switchMaterial.setChecked(true);
+        }
+        if (!sharedPreferenceConfig.readDeliveryBoyName().equals("")){
+            deliveryBoy_name.setText(sharedPreferenceConfig.readDeliveryBoyName());
+        }
+        if (!sharedPreferenceConfig.readDeliveryBoyNumber().equals("")){
+            deliveryBoy_no.setText(sharedPreferenceConfig.readDeliveryBoyNumber());
         }
 
         serviceIntent=new Intent(Orders.this,NotifyService.class);
@@ -225,15 +300,12 @@ public class Orders extends AppCompatActivity {
                 if (checkDetails()){
 
                     if(isChecked){
-                        editor = sharedPreferences.edit();
-                        editor.putBoolean("notification" , true);
+                        sharedPreferenceConfig.writeNotificationStatus(true);
                         startService(serviceIntent);
                     }else{
-                        editor = sharedPreferences.edit();
-                        editor.putBoolean("notification" , false);
+                        sharedPreferenceConfig.writeNotificationStatus(false);
                         stopService(serviceIntent);
                     }
-                    editor.commit();
 
                 }else{
                     switchMaterial.setChecked(false);
