@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -82,7 +83,6 @@ public class Orders extends AppCompatActivity {
         deliveryBoy_name = findViewById(R.id.deliveryboy_name);
         deliveryBoy_no = findViewById(R.id.phoneNumber_deliveryboy);
         retrieveOrders();
-        retrieveNotification();
     }
 
 
@@ -93,6 +93,7 @@ public class Orders extends AppCompatActivity {
         DatabaseReference ordersDatabase = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode)).child(orderKey);
 
         if (sharedPreferenceConfig.readDeliveryBoyName().equals("") || sharedPreferenceConfig.readDeliveryBoyNumber().equals("")){
+
             DeliveryBoyDetails deliveryBoyDetails = new DeliveryBoyDetails();
             deliveryBoyDetails.setName(deliveryBoy_name.getText().toString());
             deliveryBoyDetails.setNumber(deliveryBoy_no.getText().toString());
@@ -158,7 +159,7 @@ public class Orders extends AppCompatActivity {
 
                         if (task.isSuccessful()){
 
-                            ordersDatabase.child("assigned").setValue("yes").addOnCompleteListener(new OnCompleteListener<Void>() {
+                            ordersDatabase.child(getApplicationContext().getResources().getString(R.string.assignedIndex)).setValue("yes").addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull  Task<Void> task) {
                                     if (task.isSuccessful()){
@@ -202,40 +203,6 @@ public class Orders extends AppCompatActivity {
         return status;
     }
 
-    private void retrieveNotification(){
-
-        DatabaseReference firebaseNotificationDatabase = FirebaseDatabase.getInstance().getReference().child("Notification");
-        firebaseNotificationDatabase.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable  String previousChildName) {
-                String assigned = snapshot.child("assigned").getValue(String.class);
-                if (assigned.equals("yes")){
-                    serviceIntent.putExtra("title"  , snapshot.child("name").getValue(String.class));
-                    serviceIntent.putExtra("Message" , snapshot.child("location").getValue(String.class));
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull  DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull  DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull  DataSnapshot snapshot, @Nullable  String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull  DatabaseError error) {
-
-            }
-        });
-    }
 
     private void retrieveOrders() {
         linearProgressIndicator.setVisibility(View.VISIBLE);
@@ -243,7 +210,7 @@ public class Orders extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-
+                Log.d("Snapshot", snapshot.toString());
                 linearProgressIndicator.setVisibility(View.INVISIBLE);
                 OrderDetails orderDetails = snapshot.getValue(OrderDetails.class);
                 orderList.add(0,orderDetails);

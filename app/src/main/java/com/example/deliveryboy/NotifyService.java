@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -32,26 +33,55 @@ public class NotifyService extends Service {
         super.onCreate();
     }
 
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        String title = intent.getStringExtra("title");
-        String message = intent.getStringExtra("Message");
+        DatabaseReference orderDatabase = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode));
+        orderDatabase.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull  DataSnapshot snapshot,  String previousChildName) {
 
+                startNotificationChannel();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull  DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull  DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable  String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull  DatabaseError error) {
+
+            }
+        });
+
+
+        return START_REDELIVER_INTENT;
+    }
+
+    public void startNotificationChannel(){
         Intent notificationIntent = new Intent(this,Orders.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this , 0 , notificationIntent , 0);
 
         Notification notification = new NotificationCompat.Builder(this , CHANNEL_ID)
-                .setContentTitle(title)
-                .setContentText(message)
+                .setContentTitle("Kepler Notification")
+                .setContentText("New Order Placed")
                 .setSmallIcon(R.drawable.ic_baseline_restaurant_24)
                 .setContentIntent(pendingIntent)
                 .build();
 
         startForeground(1 , notification);
 
-        return START_REDELIVER_INTENT;
     }
 
     @Nullable
@@ -59,6 +89,7 @@ public class NotifyService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
+
 
     @Override
     public void onDestroy() {

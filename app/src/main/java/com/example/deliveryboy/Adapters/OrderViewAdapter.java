@@ -60,6 +60,7 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
         holder.orderPicked.setVisibility(orderList.get(position).getPickupIndex().equals("yes") ? View.VISIBLE : View.INVISIBLE);
         holder.orderPlaced.setVisibility(orderList.get(position).getPlacedIndex().equals("yes") ? View.VISIBLE: View.INVISIBLE);
         holder.orderDelivered.setVisibility(orderList.get(position).getDeliveryIndex().equals("yes") ? View.VISIBLE :View.INVISIBLE);
+       // holder.assign.setChecked(orderList.get(position).getAssigned().equals("yes"));
         holder.date.setText(orderList.get(position).getTime()+" "+orderList.get(position).getDate());
         holder.orderCardView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -28,6 +28,15 @@ public class OrderDetails implements Parcelable {
     private String transactionId;
     private String hotelId;
     private String phoneNumber;
+    private String assigned;
+
+    public String getAssigned() {
+        return assigned;
+    }
+
+    public void setAssigned(String assigned) {
+        this.assigned = assigned;
+    }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
