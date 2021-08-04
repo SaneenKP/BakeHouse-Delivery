@@ -41,6 +41,27 @@ public class SharedPreferenceConfig {
         return sharedPreferences.getString("number" , "");
     }
 
+    public void writeLatestOnlineTime(String time){
+
+        editor.putString("time" , time);
+        editor.commit();
+
+    }
+
+    public String readLatestOnlineTime(){
+        return sharedPreferences.getString("time","");
+    }
+
+    public void writeLatestOnlineDate(String date){
+
+        editor.putString("date" ,date);
+        editor.commit();
+
+    }
+
+    public String readLatestOnlineDate(){
+        return sharedPreferences.getString("date","");
+    }
     public boolean readNotificationStatus(){
         return sharedPreferences.getBoolean("notification",false);
     }

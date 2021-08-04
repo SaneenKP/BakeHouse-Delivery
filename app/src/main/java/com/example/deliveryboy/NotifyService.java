@@ -15,14 +15,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.example.deliveryboy.PojoClasses.OrderDetails;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.example.deliveryboy.App.CHANNEL_ID;
 
@@ -37,15 +43,28 @@ public class NotifyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         DatabaseReference orderDatabase = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode));
-        orderDatabase.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull  DataSnapshot snapshot,  String previousChildName) {
+        Query latestOrder = orderDatabase.orderByKey().limitToLast(1);
 
-                startNotificationChannel();
+        latestOrder.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot,  String previousChildName) {
+
+                String time = snapshot.child("time").getValue(String.class);
+                String date = snapshot.child("date").getValue(String.class);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                try {
+                    Date latestOrderTime = sdf.parse(date + " " + time);
+                    Date latestUserOnlineTime = sdf.parse(new SharedPreferenceConfig(getApplicationContext()).readLatestOnlineDate() + " " + new SharedPreferenceConfig(getApplicationContext()).readLatestOnlineTime());
+                    if (latestOrderTime.after(latestUserOnlineTime) || latestOrderTime.equals(latestUserOnlineTime)){
+                        startNotificationChannel();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
-            public void onChildChanged(@NonNull  DataSnapshot snapshot, @Nullable String previousChildName) {
+            public void onChildChanged(@NonNull  DataSnapshot snapshot, @Nullable  String previousChildName) {
 
             }
 
@@ -55,7 +74,7 @@ public class NotifyService extends Service {
             }
 
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable  String previousChildName) {
+            public void onChildMoved(@NonNull  DataSnapshot snapshot, @Nullable  String previousChildName) {
 
             }
 
@@ -64,6 +83,7 @@ public class NotifyService extends Service {
 
             }
         });
+
 
 
         return START_REDELIVER_INTENT;

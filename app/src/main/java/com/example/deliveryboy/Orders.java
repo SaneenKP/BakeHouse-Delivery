@@ -33,7 +33,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Orders extends AppCompatActivity {
@@ -207,10 +210,9 @@ public class Orders extends AppCompatActivity {
     private void retrieveOrders() {
         linearProgressIndicator.setVisibility(View.VISIBLE);
         fireBaseRealtimeDatabase.addChildEventListener(new ChildEventListener() {
-            @Override
+            @Override 
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                Log.d("Snapshot", snapshot.toString());
                 linearProgressIndicator.setVisibility(View.INVISIBLE);
                 OrderDetails orderDetails = snapshot.getValue(OrderDetails.class);
                 orderList.add(0,orderDetails);
@@ -243,9 +245,24 @@ public class Orders extends AppCompatActivity {
 
     }
 
+
+    public String getLatestOnlineTime(){
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        return timeFormat.format(Calendar.getInstance().getTime());
+    }
+
+    public String getLatestOnlineDate(){
+        DateFormat timeFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return timeFormat.format(Calendar.getInstance().getTime());
+
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
+
+        sharedPreferenceConfig.writeLatestOnlineTime(getLatestOnlineTime());
+        sharedPreferenceConfig.writeLatestOnlineDate(getLatestOnlineDate());
 
         if (sharedPreferenceConfig.readNotificationStatus()){
             switchMaterial.setChecked(true);
