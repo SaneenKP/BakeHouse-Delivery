@@ -40,14 +40,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/deliveryboy_name"
-                android:text="Name of Delivery Boy"
                 android:padding="12dp"
                 />
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/phoneNumber_deliveryboy"
-                android:text="7907142802"
                 android:padding="12dp"
                 />
         </androidx.appcompat.widget.LinearLayoutCompat>

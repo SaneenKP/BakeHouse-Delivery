@@ -95,104 +95,63 @@ public class Orders extends AppCompatActivity {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference ordersDatabase = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode)).child(orderKey);
 
-        if (sharedPreferenceConfig.readDeliveryBoyName().equals("") || sharedPreferenceConfig.readDeliveryBoyNumber().equals("")){
+        DeliveryBoyDetails deliveryBoyDetails = new DeliveryBoyDetails();
+        deliveryBoyDetails.setName(deliveryBoy_name.getText().toString());
+        deliveryBoyDetails.setNumber(deliveryBoy_no.getText().toString());
+        sharedPreferenceConfig.writeDeliveryBoyDetails(deliveryBoyDetails);
 
-            DeliveryBoyDetails deliveryBoyDetails = new DeliveryBoyDetails();
-            deliveryBoyDetails.setName(deliveryBoy_name.getText().toString());
-            deliveryBoyDetails.setNumber(deliveryBoy_no.getText().toString());
-            sharedPreferenceConfig.writeDeliveryBoyDetails(deliveryBoyDetails);
+        DatabaseReference deliveryBoyDatabase = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.DeliveryBoyNode));
 
-            DatabaseReference deliveryBoyDatabase = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.DeliveryBoyNode));
-            deliveryBoyDatabase.child(userID).setValue(deliveryBoyDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull  Task<Void> task) {
+        deliveryBoyDatabase.child(userID).setValue(deliveryBoyDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull  Task<Void> task) {
 
-                        if (task.isSuccessful()){
+                if (task.isSuccessful()){
 
-                            ordersDatabase.child(getApplicationContext().getResources().getString(R.string.DeliveryBoyNode)).setValue(userID).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull  Task<Void> task) {
+                    ordersDatabase.child(getApplicationContext().getResources().getString(R.string.DeliveryBoyNode)).setValue(userID).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull  Task<Void> task) {
 
-                                    if (task.isSuccessful()){
+                            if (task.isSuccessful()){
 
-                                        if (task.isSuccessful()){
+                                if (task.isSuccessful()){
 
-                                            ordersDatabase.child("assigned").setValue("yes").addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull  Task<Void> task) {
-                                                    if (task.isSuccessful()){
-                                                        assign.setChecked(true);
-                                                        assign.setClickable(false);
-                                                        Toast.makeText(getApplicationContext() , "Order Assigned",Toast.LENGTH_SHORT).show();
+                                    ordersDatabase.child("assigned").setValue("yes").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull  Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                assign.setChecked(true);
+                                                assign.setClickable(false);
+                                                Toast.makeText(getApplicationContext() , "Order Assigned",Toast.LENGTH_SHORT).show();
 
-                                                    }else{
-                                                        assign.setChecked(false);
-                                                        Toast.makeText(getApplicationContext() , "Failed  "+ task.getException(),Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-                                            });
-
-                                        }else{
-                                            assign.setChecked(false);
-                                            Toast.makeText(getApplicationContext() , "Failed  "+ task.getException(),Toast.LENGTH_SHORT).show();
+                                            }else{
+                                                assign.setChecked(false);
+                                                Toast.makeText(getApplicationContext() , "Failed  "+ task.getException(),Toast.LENGTH_SHORT).show();
+                                            }
                                         }
+                                    });
 
-                                    }
-                                    else{
-                                        Toast.makeText(getApplicationContext() , "Failed  to assign delivery boy"+ task.getException(),Toast.LENGTH_SHORT).show();
-
-                                    }
-
+                                }else{
+                                    assign.setChecked(false);
+                                    Toast.makeText(getApplicationContext() , "Failed  "+ task.getException(),Toast.LENGTH_SHORT).show();
                                 }
 
-                            });
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext() , "Failed  to assign delivery boy"+ task.getException(),Toast.LENGTH_SHORT).show();
 
-                        }else{
-                            Toast.makeText(getApplicationContext() , "Failed  to set delivery boy data"+ task.getException(),Toast.LENGTH_SHORT).show();
+                            }
+
                         }
 
-                }
-            });
-        }else{
-            ordersDatabase.child(getApplicationContext().getResources().getString(R.string.DeliveryBoyNode)).setValue(userID).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull  Task<Void> task) {
+                    });
 
-                    if (task.isSuccessful()){
-
-                        if (task.isSuccessful()){
-
-                            ordersDatabase.child(getApplicationContext().getResources().getString(R.string.assignedIndex)).setValue("yes").addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull  Task<Void> task) {
-                                    if (task.isSuccessful()){
-                                        assign.setChecked(true);
-                                        assign.setClickable(false);
-                                        Toast.makeText(getApplicationContext() , "Order Assigned",Toast.LENGTH_SHORT).show();
-
-                                    }else{
-                                        assign.setChecked(false);
-                                        Toast.makeText(getApplicationContext() , "Failed  "+ task.getException(),Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-
-                        }else{
-                            assign.setChecked(false);
-                            Toast.makeText(getApplicationContext() , "Failed  "+ task.getException(),Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext() , "Failed  to assign delivery boy"+ task.getException(),Toast.LENGTH_SHORT).show();
-
-                    }
-
+                }else{
+                    Toast.makeText(getApplicationContext() , "Failed  to set delivery boy data"+ task.getException(),Toast.LENGTH_SHORT).show();
                 }
 
-            });
-
-        }
+            }
+        });
 
      }
 

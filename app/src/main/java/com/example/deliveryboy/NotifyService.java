@@ -51,6 +51,7 @@ public class NotifyService extends Service {
 
                 String time = snapshot.child("time").getValue(String.class);
                 String date = snapshot.child("date").getValue(String.class);
+
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 try {
                     Date latestOrderTime = sdf.parse(date + " " + time);
