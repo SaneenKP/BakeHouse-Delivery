@@ -254,28 +254,6 @@ public class Orders extends AppCompatActivity {
                     switchMaterial.setChecked(false);
                 }
 
-/*                if (TextUtils.isEmpty(deliveryBoy_name.getText().toString()) || TextUtils.isEmpty(deliveryBoy_no.getText().toString())){
-                    switchMaterial.setChecked(false);
-                    Toast.makeText(getApplicationContext(), "Name and Number field should not be empty", Toast.LENGTH_SHORT).show();
-                }else{
-                    if (deliveryBoy_no.getText().toString().length() != 10){
-                        switchMaterial.setChecked(false);
-                        Toast.makeText(getApplicationContext(), "invalid phone number format", Toast.LENGTH_SHORT).show();
-                    }else{
-                        if(isChecked){
-                            editor = sharedPreferences.edit();
-                            editor.putBoolean("notification" , true);
-                            startService(serviceIntent);
-                        }else{
-                            editor = sharedPreferences.edit();
-                            editor.putBoolean("notification" , false);
-                            stopService(serviceIntent);
-                        }
-                        editor.commit();
-                    }
-
-                }*/
-
             }
         });
 
