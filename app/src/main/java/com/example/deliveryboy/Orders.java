@@ -7,11 +7,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -43,7 +40,7 @@ public class Orders extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private DatabaseReference fireBaseRealtimeDatabase;
+    private DatabaseReference ordersReference;
     private OrderDetails orderDetails;
     private List<OrderDetails> orderList;
     private OrderViewAdapter orderViewAdapter;
@@ -67,7 +64,7 @@ public class Orders extends AppCompatActivity {
         orderKeys = new ArrayList<>();
         dishKeys = new ArrayList<>();
         sharedPreferenceConfig = new SharedPreferenceConfig(getApplicationContext());
-        fireBaseRealtimeDatabase = FirebaseDatabase.getInstance().getReference().child("Orders");
+        ordersReference = FirebaseDatabase.getInstance().getReference().child("Orders");
         linearProgressIndicator=findViewById(R.id.orderLoadProgress);
         linearProgressIndicator.setVisibility(View.INVISIBLE);
         orderViewAdapter = new OrderViewAdapter(Orders.this, orderList, orderKeys, new SetDeliveryBoyInterface() {
@@ -159,16 +156,30 @@ public class Orders extends AppCompatActivity {
 
     private boolean checkDetails(){
 
-        boolean status = !TextUtils.isEmpty(deliveryBoy_name.getText().toString()) && !TextUtils.isEmpty(deliveryBoy_no.getText().toString()) && (deliveryBoy_no.getText().toString().length() == 10);
-        if (!status)
-            Toast.makeText(getApplicationContext(), "Name and Number field should not be empty", Toast.LENGTH_SHORT).show();
-        return status;
+        if (deliveryBoy_name.getText().toString().equals("")){
+            deliveryBoy_name.setError("Name cannot be empty");
+            return false;
+        }
+
+        if (deliveryBoy_no.getText().toString().equals("")){
+            deliveryBoy_no.setError("Number cannot be empty");
+            return false;
+        }
+        if (deliveryBoy_no.getText().length() != 10){
+            Toast.makeText(getApplicationContext(),"Incorrect number format" , Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+
     }
 
 
     private void retrieveOrders() {
+
         linearProgressIndicator.setVisibility(View.VISIBLE);
-        fireBaseRealtimeDatabase.addChildEventListener(new ChildEventListener() {
+
+        ordersReference.addChildEventListener(new ChildEventListener() {
+
             @Override 
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
@@ -182,8 +193,10 @@ public class Orders extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
                 orderList.set(orderKeys.indexOf(snapshot.getKey()),snapshot.getValue(OrderDetails.class));
                 orderViewAdapter.notifyDataSetChanged();
+
             }
 
             @Override

@@ -47,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/phoneNumber_deliveryboy"
                 android:padding="12dp"
+                android:inputType="number"
                 />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
