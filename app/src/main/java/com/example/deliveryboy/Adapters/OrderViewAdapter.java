@@ -127,7 +127,6 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
 
     private void showDialog(CheckBox assign , String key){
 
-
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
         alertDialogBuilder.setTitle("Are you sure to assign to this order");
 
@@ -152,6 +151,7 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
 
         AlertDialog dialog = alertDialogBuilder.create();
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         dialog.show();
     }
 
