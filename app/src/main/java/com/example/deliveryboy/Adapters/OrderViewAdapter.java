@@ -61,17 +61,17 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
         holder.orderPicked.setVisibility(orderList.get(position).getPickupIndex().equals("yes") ? View.VISIBLE : View.INVISIBLE);
         holder.orderPlaced.setVisibility(orderList.get(position).getPlacedIndex().equals("yes") ? View.VISIBLE: View.INVISIBLE);
         holder.orderDelivered.setVisibility(orderList.get(position).getDeliveryIndex().equals("yes") ? View.VISIBLE :View.INVISIBLE);
-
-        if (orderList.get(position).getAssigned()!=null){
-
-            Log.d("assignNullOrNot" , orderList.get(position).getAssigned());
-            if (orderList.get(position).getAssigned().equals("yes")){
+        try {
+            if (orderList.get(position).getAssigned()==null){
+                holder.assign.setChecked(false);
+                holder.assign.setClickable(true);
+            }
+            else{
                 holder.assign.setChecked(true);
                 holder.assign.setClickable(false);
-
             }
+        }catch (NullPointerException e){}
 
-        }
         holder.date.setText(orderList.get(position).getTime()+" "+orderList.get(position).getDate());
         holder.orderCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,8 +110,6 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
 
             }
         });
-
-        Log.d("clickableafter" , holder.assign.isClickable()+"");
 
         if (holder.assign.isClickable()) {
             {
