@@ -79,6 +79,7 @@ public class OrderViewAdapter extends RecyclerView.Adapter<OrderViewAdapter.orde
                 Intent openOrderDetailsDisplay = new Intent(context , orderDetailsDisplay.class);
                 openOrderDetailsDisplay.putExtra("OrderDetails" , orderList.get(holder.getAdapterPosition()));
                 openOrderDetailsDisplay.putExtra("OrderKey" ,  orderKeys.get(holder.getAdapterPosition()));
+                openOrderDetailsDisplay.putExtra("isAssignedStatus" , holder.assign.isChecked());
                 openOrderDetailsDisplay.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(openOrderDetailsDisplay);
             }

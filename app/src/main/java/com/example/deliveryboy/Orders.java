@@ -51,6 +51,7 @@ public class Orders extends AppCompatActivity {
     private EditText deliveryBoy_name , deliveryBoy_no;
     private SharedPreferenceConfig sharedPreferenceConfig;
     private SetDeliveryBoyInterface deliveryBoyInterface;
+    private boolean backPressAllowed = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,7 +240,7 @@ public class Orders extends AppCompatActivity {
         sharedPreferenceConfig.writeLatestOnlineTime(getLatestOnlineTime());
         sharedPreferenceConfig.writeLatestOnlineDate(getLatestOnlineDate());
     }
-    
+
 
     @Override
     protected void onStart() {

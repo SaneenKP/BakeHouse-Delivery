@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.service.autofill.Dataset;
 import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
@@ -36,6 +37,8 @@ public class orderDetailsDisplay extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private String dishNames , orderKey;
     private MaterialTextView hotelAddress;
+    private boolean isAssignedStatus = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +66,7 @@ public class orderDetailsDisplay extends AppCompatActivity {
         Intent getOrderDetails = getIntent();
         orderDetails = getOrderDetails.getParcelableExtra("OrderDetails");
         orderKey = getOrderDetails.getStringExtra("OrderKey");
+        isAssignedStatus = getOrderDetails.getBooleanExtra("isAssignedStatus" , false);
 
         setCheckBoxes(orderKey);
         setOrderDetails(orderDetails);
@@ -74,29 +78,33 @@ public class orderDetailsDisplay extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 DatabaseReference setOrderChanges = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode)).child(orderKey);
+                if (!isAssignedStatus){
+                    placed.setChecked(false);
+                    Toast.makeText(getApplicationContext() , "Order not assigned !" , Toast.LENGTH_SHORT).show();
+                }else{
 
-                if (isChecked){
+                    if (isChecked)
+                        setOrderChanges.child(getApplicationContext().getResources().getString(R.string.placedIndexStatus)).setValue("yes");
+                    else
+                        setOrderChanges.child(getApplicationContext().getResources().getString(R.string.placedIndexStatus)).setValue("no");
 
-                    setOrderChanges.child(getApplicationContext().getResources().getString(R.string.placedIndexStatus)).setValue("yes");
                 }
-                else{
-                    setOrderChanges.child(getApplicationContext().getResources().getString(R.string.placedIndexStatus)).setValue("no");
-
-                }
-
             }
         });
         picked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 DatabaseReference setOrderChanges = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode)).child(orderKey);
+                Log.d("tag", "onCheckedChanged: "+isAssignedStatus);
+                if (!isAssignedStatus){
+                    picked.setChecked(false);
+                    Toast.makeText(getApplicationContext() , "Order not assigned !" , Toast.LENGTH_SHORT).show();
+                }else{
 
-                if (isChecked){
-
-                    setOrderChanges.child(getApplicationContext().getResources().getString(R.string.pickupIndexStatus)).setValue("yes");
-                }
-                else{
-                    setOrderChanges.child(getApplicationContext().getResources().getString(R.string.pickupIndexStatus)).setValue("no");
+                    if (isChecked)
+                        setOrderChanges.child(getApplicationContext().getResources().getString(R.string.pickupIndexStatus)).setValue("yes");
+                    else
+                        setOrderChanges.child(getApplicationContext().getResources().getString(R.string.pickupIndexStatus)).setValue("no");
 
                 }
 
@@ -105,21 +113,30 @@ public class orderDetailsDisplay extends AppCompatActivity {
         delivered.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 DatabaseReference setOrderChanges = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode)).child(orderKey);
-                if (isChecked){
+                Log.d("tag", "onCheckedChanged: "+isAssignedStatus);
+                if (!isAssignedStatus){
+                    delivered.setChecked(false);
+                    Toast.makeText(getApplicationContext() , "Order not assigned !" , Toast.LENGTH_SHORT).show();
+                }else{
 
-                    setOrderChanges.child(getApplicationContext().getResources().getString(R.string.deliveryIndexStatus)).setValue("yes");
-                }
-                else{
-                    setOrderChanges.child(getApplicationContext().getResources().getString(R.string.deliveryIndexStatus)).setValue("no");
-
+                    if (isChecked){
+                        Toast.makeText(getApplicationContext(),"Order Delivered" , Toast.LENGTH_SHORT).show();
+                        setOrderChanges.child(getApplicationContext().getResources().getString(R.string.deliveryIndexStatus)).setValue("yes");
+                        placed.setClickable(false);
+                        picked.setClickable(false);
+                        delivered.setClickable(false);
+                    }
+                    else
+                        setOrderChanges.child(getApplicationContext().getResources().getString(R.string.deliveryIndexStatus)).setValue("no");
                 }
 
             }
         });
 
     }
+
+
 
     private void setCheckBoxes(String orderKey){
         DatabaseReference getOrderStatus = FirebaseDatabase.getInstance().getReference().child(getApplicationContext().getResources().getString(R.string.OrderNode)).child(orderKey);
@@ -213,4 +230,5 @@ public class orderDetailsDisplay extends AppCompatActivity {
         street.setText(orderDetails.getStreet());
         date.setText(orderDetails.getDate());
     }
+
 }
