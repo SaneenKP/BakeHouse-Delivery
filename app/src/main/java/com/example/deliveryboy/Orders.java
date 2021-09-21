@@ -50,6 +50,7 @@ public class Orders extends AppCompatActivity {
     private Intent serviceIntent;
     private EditText deliveryBoy_name , deliveryBoy_no;
     private SharedPreferenceConfig sharedPreferenceConfig;
+    private SetDeliveryBoyInterface deliveryBoyInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,6 @@ public class Orders extends AppCompatActivity {
 
         layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView = findViewById(R.id.ordersView);
-        recyclerView.setLayoutManager(layoutManager);
         orderList = new ArrayList<>();
         orderKeys = new ArrayList<>();
         dishKeys = new ArrayList<>();
@@ -67,18 +67,22 @@ public class Orders extends AppCompatActivity {
         ordersReference = FirebaseDatabase.getInstance().getReference().child("Orders");
         linearProgressIndicator=findViewById(R.id.orderLoadProgress);
         linearProgressIndicator.setVisibility(View.INVISIBLE);
-        orderViewAdapter = new OrderViewAdapter(Orders.this, orderList, orderKeys, new SetDeliveryBoyInterface() {
+
+        deliveryBoyInterface = new SetDeliveryBoyInterface() {
             @Override
-            public void setDeliveryBoy(String OrderKey , CheckBox assign) {
-                 setDeliveryBoyDetails(OrderKey , assign);
+            public void setDeliveryBoy(String OrderKey, CheckBox assign) {
+                setDeliveryBoyDetails(OrderKey , assign);
             }
 
             @Override
             public boolean checkDeliveryBoyDetails() {
                 return checkDetails();
             }
-        });
+        };
+        orderViewAdapter = new OrderViewAdapter(Orders.this, orderList, orderKeys, deliveryBoyInterface);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(orderViewAdapter);
+
         switchMaterial=findViewById(R.id.switch1);
         deliveryBoy_name = findViewById(R.id.deliveryboy_name);
         deliveryBoy_no = findViewById(R.id.phoneNumber_deliveryboy);
@@ -228,6 +232,14 @@ public class Orders extends AppCompatActivity {
         return timeFormat.format(Calendar.getInstance().getTime());
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sharedPreferenceConfig.writeLatestOnlineTime(getLatestOnlineTime());
+        sharedPreferenceConfig.writeLatestOnlineDate(getLatestOnlineDate());
+    }
+    
 
     @Override
     protected void onStart() {
