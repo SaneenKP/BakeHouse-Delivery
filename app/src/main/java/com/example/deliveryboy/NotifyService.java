@@ -93,7 +93,7 @@ public class NotifyService extends Service {
     public void startNotificationChannel(){
         Intent notificationIntent = new Intent(this,Orders.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this , 0 , notificationIntent , 0);
-
+        Log.d("Tag","Message");
         Notification notification = new NotificationCompat.Builder(this , CHANNEL_ID)
                 .setContentTitle("Kepler Notification")
                 .setContentText("New Order Placed")
