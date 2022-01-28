@@ -95,8 +95,8 @@ public class NotifyService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this , 0 , notificationIntent , 0);
         Log.d("Tag","Message");
         Notification notification = new NotificationCompat.Builder(this , CHANNEL_ID)
-                .setContentTitle("Kepler Notification")
-                .setContentText("New Order Placed")
+                .setContentTitle("BakeHouse Notification")
+                .setContentText("Hey!! There is a new order for you")
                 .setSmallIcon(R.drawable.ic_baseline_restaurant_24)
                 .setContentIntent(pendingIntent)
                 .build();
