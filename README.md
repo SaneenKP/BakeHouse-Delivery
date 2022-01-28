@@ -22,7 +22,7 @@
     <a href="https://github.com/saneenKP/food-app/actions" alt="CI">
         <img alt="CI" src="https://github.com/Sharkaboi/MediaHub/actions/workflows/android.yaml/badge.svg">
     </a><br>
-    BakeHouse Hotel and Customer client Application.
+    BakeHouse Delivery Application.
 </p>
 
 ## Table Of Contents
