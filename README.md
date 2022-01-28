@@ -60,6 +60,7 @@ The name and number of the delivery staff is recorded and provided to the client
 * [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences)
 * [Gson](https://github.com/google/gson)
 * [google maps](https://developers.google.com/maps/documentation/android-sdk/overview)
+* [Notification Services](https://developer.android.com/guide/components/services)
 
 ## Build instructions
 
