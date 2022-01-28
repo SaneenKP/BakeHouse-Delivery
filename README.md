@@ -40,11 +40,9 @@
 
 ## About The Project
 
-BakeHouse is a Food Delivery system where the users can easily access the chain of hotels and restaurents in their surroundings and order food according to their intrests. The users just need to authenticate using their phone number and continue ordering food / drinks etc from their favorites restaurants.
-
-Hotels and Restaurants can also create an account to publish about their offerings with specific details like iamge , description , price.
-
-The data in the backend is stored and retrieved using firebase realtime database, Firebase Storage is used to store the images and other assets.
+BakeHouse Delivery Application is the system used by delivery staffs at BakeHouse. The delivery staffs would be notified with the latest order if they are online with ready to delivery mode.
+The staffs can then access the location of the order through google maps and update the status accordingly. the updated status would be displayed in the client application in realtime using Firebase Realtime Database.
+The name and number of the delivery staff is recorded and provided to the client application.
 
 ## Screenshots
 
@@ -56,17 +54,12 @@ The data in the backend is stored and retrieved using firebase realtime database
 * [Firebase Realtime Database](https://firebase.google.com/docs/database)
 * [Firebase Authentication](https://firebase.google.com/docs/auth)
 * [Firebase Cloud Functions](https://firebase.google.com/docs/functions)
-* [Firebase Storage](https://firebase.google.com/docs/storage)
-* [Glide](https://github.com/bumptech/glide)
-* [Razorpay](https://razorpay.com/)
 * [okHttp](https://square.github.io/okhttp/)
-* [Country Code Picker Library](https://github.com/hbb20/CountryCodePickerProject)
-* [swiperefresh layout](https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout)
 * [NetDetect](https://github.com/amrsalah3/NetDetect)
-* [CircleImageView](https://github.com/hdodenhof/CircleImageView)
 * [Constraint Layout](https://developer.android.com/reference/androidx/constraintlayout/widget/ConstraintLayout)
 * [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences)
 * [Gson](https://github.com/google/gson)
+* [google maps](https://developers.google.com/maps/documentation/android-sdk/overview)
 
 ## Build instructions
 
