@@ -1,5 +1,5 @@
 <p align="center">
-    <img align="center" style="width:100%;" src="./assets/BakeHouse Logo.png" /><br>
+    <img align="center" style="width:100%,height:10%;" src="./assets/BakeHouse Logo.png" /><br>
     <b><h1 align="center">BakeHouse Delivery</h1></b>
 </p>
 
@@ -45,6 +45,12 @@ The staffs can then access the location of the order through google maps and upd
 The name and number of the delivery staff is recorded and provided to the client application.
 
 ## Screenshots
+
+<img src="assets/screenshots/ss1.jpg" width="180"> <img src="assets/screenshots/ss2.jpg" width="180"> <img src="assets/screenshots/ss3.jpg" width="180"> <img src="assets/screenshots/ss4.jpg" width="180"> 
+
+<img src="assets/screenshots/ss5.jpg" width="180"> <img src="assets/screenshots/ss6.jpg" width="180"> <img src="assets/screenshots/ss7.jpg" width="180"> <img src="assets/screenshots/ss8.jpg" width="180">
+
+
 
 ## Built With
 
